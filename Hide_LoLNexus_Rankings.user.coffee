@@ -5,7 +5,7 @@
 // @description Want to know who you're playing against but don't care about ratings? Use this.
 // @include     http://lolnexus.com/*/search*
 // @include     http://www.lolnexus.com/*/search*
-// @version     0.2.0
+// @version     0.2.1
 // @grant       none
 // @require     https://userscripts.org/scripts/source/145813.user.js
 // ==/UserScript==
@@ -42,7 +42,6 @@ add_toggle_button = ->
 
   $("#save-toggle").change ->
     GM_setValue("auto_hide", @checked)
-    true
 
 
 toggle_rankings = (duration = 500) ->
@@ -76,5 +75,3 @@ $(document).ready ->
     add_toggle_button()
 
   check_for_cells()
-
-console.log "hi"

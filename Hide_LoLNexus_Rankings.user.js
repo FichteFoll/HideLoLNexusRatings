@@ -6,7 +6,7 @@
 // @description Want to know who you're playing against but don't care about ratings? Use this.
 // @include     http://lolnexus.com/*/search*
 // @include     http://www.lolnexus.com/*/search*
-// @version     0.2.0
+// @version     0.2.1
 // @grant       none
 // @require     https://userscripts.org/scripts/source/145813.user.js
 // ==/UserScript==
@@ -34,8 +34,7 @@ add_toggle_button = function() {
     return false;
   });
   return $("#save-toggle").change(function() {
-    GM_setValue("auto_hide", this.checked);
-    return true;
+    return GM_setValue("auto_hide", this.checked);
   });
 };
 
@@ -78,5 +77,3 @@ $(document).ready(function() {
   };
   return check_for_cells();
 });
-
-console.log("hi");
