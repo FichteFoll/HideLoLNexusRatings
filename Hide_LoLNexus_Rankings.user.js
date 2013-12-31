@@ -4,23 +4,18 @@
 // @namespace   FichteFoll
 // @author      FichteFoll
 // @description Want to know who you're playing against but don't care about ratings? Use this.
-// @include     http://lolnexus.com/*
-// @version     0.1.0
+// @include     http://lolnexus.com/*/search*
+// @include     http://www.lolnexus.com/*/search*
+// @version     0.2.0
 // @grant       none
 // @require     https://userscripts.org/scripts/source/145813.user.js
 // ==/UserScript==
 ;
-/* **TODO**
-#
-# -? Instead of animating opacity, animate width (DOESN'T WORK)
-# -? Add a checkbox to each header to toggle it individually
-*/
-
 /* jshint newcap:false*/
 
 /* global jQuery:true*/
 
-/* global GM_setValue:true, GM_getValue:true, GM_deleteValue:true*/
+/* global GM_setValue:true, GM_getValue:true*/
 
 var $, $rank_cells, add_toggle_button, auto_hide, cells_hidden, toggle_rankings;
 
@@ -33,18 +28,14 @@ cells_hidden = false;
 auto_hide = GM_getValue("auto_hide", false) === 'true';
 
 add_toggle_button = function() {
-  var cells, i, row_widths, _i;
-  cells = $(".row-fluid").children();
-  row_widths = [1, 2, 3, 2, 1];
-  for (i = _i = 0; _i < 5; i = ++_i) {
-    cells[i].className = "span" + row_widths[i];
-  }
-  $("<div class=\"span3 row-fluid\" id=\"rank-toggle-div\" style=\"text-align: center\">\n  <div id=\"toggle\" class=\"span7 row-fluid\" style=\"text-align:center; color:#f4f4f4\">\n    <a id=\"rank-toggle\" class=\"btn btn-large btn-customBlue\" href=\"#\">\n      Toggle rankings</a>\n  </div>\n  <input id=\"save-toggle\" type=\"checkbox\" style=\"height: 34px;\" " + (auto_hide && "checked" || '') + ">\n    Auto Hide\n  </input>\n</div>").insertAfter(cells[2]);
+  $(".vs").html("<a id=\"rank-toggle\" class=\"blue-button\" href=\"#\" style=\"font-size: 12px; margin-right: 20px;\">\n  Toggle rankings</a>\nVS\n<input id=\"save-toggle\" type=\"checkbox\" style=\"margin-left: 20px;\" " + (auto_hide && "checked" || '') + " />\n<!-- I have to add some margin-right here because otherwise the S3 column\nheader (!!) would lay above the checkbox. Fuck knows. -->\n<span style=\"margin-right: 50px\">\n  Auto Hide</span>");
   $("#rank-toggle").click(function() {
-    return toggle_rankings();
+    toggle_rankings();
+    return false;
   });
   return $("#save-toggle").change(function() {
-    return GM_setValue("auto_hide", this.checked);
+    GM_setValue("auto_hide", this.checked);
+    return true;
   });
 };
 
@@ -62,12 +53,30 @@ toggle_rankings = function(duration) {
 
 
 $(document).ready(function() {
-  $rank_cells = $("table[id^=set] td > img[src^='images/medals']").parent();
-  if (!$rank_cells.length) {
-    return;
-  }
-  if (auto_hide) {
-    toggle_rankings(0);
-  }
-  return add_toggle_button();
+  var check_for_cells;
+  check_for_cells = function(tries) {
+    if (tries == null) {
+      tries = 1;
+    }
+    if (tries === 60) {
+      return;
+    }
+    if ($(".error").length || $(".header-bar h2 small").html() === "Region Disabled") {
+      return console.log("summoner not in game (or region disabled or unable to query server or ...)");
+    }
+    $rank_cells = $(".ranking");
+    if (!$rank_cells.length) {
+      setTimeout((function() {
+        return check_for_cells(tries + 1);
+      }), 100);
+      return;
+    }
+    if (auto_hide) {
+      toggle_rankings(0);
+    }
+    return add_toggle_button();
+  };
+  return check_for_cells();
 });
+
+console.log("hi");
