@@ -11,11 +11,6 @@
 // ==/UserScript==
 `
 
-# jshint stuff
-### jshint newcap:false ###
-### global jQuery:true ###
-### global GM_setValue:true, GM_getValue:true ###
-
 # Luckily, LoLNexus uses jQuery so we can re-use it
 $ = jQuery
 
@@ -25,15 +20,15 @@ cells_hidden = false
 auto_hide = GM_getValue("auto_hide", false) == 'true'
 
 add_toggle_button = ->
-  $(".vs").html """
-    <a id="rank-toggle" class="blue-button" href="#" style="font-size: 12px; margin-right: 20px;">
-      Toggle rankings</a>
-    VS
-    <input id="save-toggle" type="checkbox" style="margin-left: 20px;" #{auto_hide and "checked" or ''} />
-    <!-- I have to add some margin-right here because otherwise the S3 column
-    header (!!) would lay above the checkbox. Fuck knows. -->
-    <span style="margin-right: 50px">
-      Auto Hide</span>
+  $(".cv-upsell").after """
+    <div style="position: relative; left: 50%; transform: translateX(-10%); margin-bottom: 8px;">
+      <a id="rank-toggle" class="blue-button" href="#" style="font-size: 12px;">
+        Toggle rankings</a>
+      <br style="margin-bottom: 5px;">
+      <input id="save-toggle" type="checkbox" style="margin-left: 20px;" #{auto_hide and "checked" or ''}>
+      <span>
+        Auto Hide</span>
+    </div>
     """
 
   $("#rank-toggle").click ->
@@ -45,7 +40,7 @@ add_toggle_button = ->
 
 
 toggle_rankings = (duration = 500) ->
-  $rank_cells.animate "opacity": Number(cells_hidden), duration
+  $rank_cells.animate("opacity": Number(cells_hidden), duration)
   cells_hidden = !cells_hidden
 
 
@@ -54,7 +49,7 @@ $(document).ready ->
   # Periodically try to find ranking boxes since they are now loaded "on the fly"
   # Try 100 times every 100ms, which makes 10s, and abort if error message shown
   check_for_cells = (tries = 1) ->
-    return if tries == 60
+    return if tries == 100
 
     # Check if summoner is not in game or region disabled
     if $(".error").length or $(".header-bar h2 small").html() == "Region Disabled"
@@ -63,7 +58,7 @@ $(document).ready ->
     $rank_cells = $(".ranking")
     if !$rank_cells.length
       # Retry
-      setTimeout (-> check_for_cells tries + 1), 100
+      setTimeout (-> check_for_cells(tries + 1)), 100
       return
 
     # console.log "tries:", tries
