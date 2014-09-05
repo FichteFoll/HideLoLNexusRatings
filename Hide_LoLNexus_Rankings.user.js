@@ -8,6 +8,7 @@
 // @include     http://www.lolnexus.com/*/search*
 // @version     0.2.2
 // @grant       none
+// @downloadURL https://github.com/FichteFoll/HideLoLNexusRatings/raw/master/Hide_LoLNexus_Rankings.user.js
 // ==/UserScript==
 ;
 var $, $rank_cells, add_toggle_button, auto_hide, cells_hidden, toggle_rankings;
