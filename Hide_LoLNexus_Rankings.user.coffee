@@ -5,7 +5,7 @@
 // @description Want to know who you're playing against but don't care about ratings? Use this.
 // @include     http://lolnexus.com/*/search*
 // @include     http://www.lolnexus.com/*/search*
-// @version     0.2.1
+// @version     0.2.2
 // @grant       none
 // @require     https://userscripts.org/scripts/source/145813.user.js
 // ==/UserScript==
