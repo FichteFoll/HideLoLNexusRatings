@@ -2,10 +2,10 @@
 // @name        Hide LoLNexus Rankings
 // @namespace   FichteFoll
 // @author      FichteFoll
-// @description Want to know who you're playing against but don't care about ratings? Use this.
+// @description Want to know what runes your opponents use but don't want to see their ratings? Use this.
 // @include     http://lolnexus.com/*/search*
 // @include     http://www.lolnexus.com/*/search*
-// @version     0.2.2
+// @version     1.0.0
 // @grant       none
 // @downloadURL https://github.com/FichteFoll/HideLoLNexusRatings/raw/master/Hide_LoLNexus_Rankings.user.js
 // ==/UserScript==
