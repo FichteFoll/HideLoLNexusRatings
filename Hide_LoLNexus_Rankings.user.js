@@ -8,7 +8,6 @@
 // @include     http://www.lolnexus.com/*/search*
 // @version     0.2.2
 // @grant       none
-// @require     https://userscripts.org/scripts/source/145813.user.js
 // ==/UserScript==
 ;
 var $, $rank_cells, add_toggle_button, auto_hide, cells_hidden, toggle_rankings;
@@ -19,7 +18,7 @@ $rank_cells = false;
 
 cells_hidden = false;
 
-auto_hide = GM_getValue("auto_hide", false) === 'true';
+auto_hide = localStorage.getItem("lolnexus_auto_hide", false) === 'true';
 
 add_toggle_button = function() {
   $(".cv-upsell").after("<div style=\"position: relative; left: 50%; transform: translateX(-10%); margin-bottom: 8px;\">\n  <a id=\"rank-toggle\" class=\"blue-button\" href=\"#\" style=\"font-size: 12px;\">\n    Toggle rankings</a>\n  <br style=\"margin-bottom: 5px;\">\n  <input id=\"save-toggle\" type=\"checkbox\" style=\"margin-left: 20px;\" " + (auto_hide && "checked" || '') + ">\n  <span>\n    Auto Hide</span>\n</div>");
@@ -28,7 +27,7 @@ add_toggle_button = function() {
     return false;
   });
   return $("#save-toggle").change(function() {
-    return GM_setValue("auto_hide", this.checked);
+    return localStorage.setItem("lolnexus_auto_hide", this.checked);
   });
 };
 

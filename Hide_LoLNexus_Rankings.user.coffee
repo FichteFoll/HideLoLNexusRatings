@@ -7,7 +7,6 @@
 // @include     http://www.lolnexus.com/*/search*
 // @version     0.2.2
 // @grant       none
-// @require     https://userscripts.org/scripts/source/145813.user.js
 // ==/UserScript==
 `
 
@@ -17,7 +16,7 @@ $ = jQuery
 # Shared (global) variables
 $rank_cells = false
 cells_hidden = false
-auto_hide = GM_getValue("auto_hide", false) == 'true'
+auto_hide = localStorage.getItem("lolnexus_auto_hide", false) == 'true'
 
 add_toggle_button = ->
   $(".cv-upsell").after """
@@ -36,7 +35,7 @@ add_toggle_button = ->
     false
 
   $("#save-toggle").change ->
-    GM_setValue("auto_hide", @checked)
+    localStorage.setItem("lolnexus_auto_hide", @checked)
 
 
 toggle_rankings = (duration = 500) ->
